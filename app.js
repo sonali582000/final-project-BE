@@ -1,21 +1,31 @@
-// ℹ️ Gets access to environment variables/settings
-// https://www.npmjs.com/package/dotenv
-require('dotenv').config()
+const express = require("express");
+const app = express();
+require("dotenv").config();
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-// Handles http requests (express is node js framework)
-// https://www.npmjs.com/package/express
-const express = require('express')
+const Port = process.env.PORT;
 
-const app = express()
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(cookieParser());
 
-// ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
-require('./config')(app)
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
 
-// 👇 Start handling routes here
-const indexRoutes = require('./routes/index.routes')
-app.use('/api', indexRoutes)
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
+  })
+);
 
-// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
-require('./error-handling')(app)
+app.use(errorHandler);
+app.use(notFoundHandler);
 
-module.exports = app
+module.exports = app;
