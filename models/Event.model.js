@@ -23,10 +23,18 @@ const eventSchema = new Schema(
     type: {
       type: String,
       required: true,
+      enum: ["in-person", "virtual", "hybrid"],
+    },
+    status: {
+      type: String,
+      enum: ["upcoming", "ongoing", "completed", "canceled"],
+    },
+    photo: {
+      type: String,
     },
     createdBy: {
       type: Types.ObjectId,
-      ref: "newUser",
+      ref: "User",
     },
   },
   {
