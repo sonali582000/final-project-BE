@@ -1,7 +1,15 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 
-router.get('/comments', (req, res) => {
+// const Comment = require("../models/Comment.model.js")
+
+router.get('/', (req, res) => {
     res.json('Comments routes')
+    console.log("ok")
 })
 
-module.exports = router
+
+
+module.exports = router;
+
+
