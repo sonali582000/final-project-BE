@@ -10,7 +10,7 @@ const eventSchema = new Schema(
     },
     date: {
       type: Date,
-      required: true,
+      required: false,
       min: "2024-01-01",
       max: "2030-12-27",
     },
