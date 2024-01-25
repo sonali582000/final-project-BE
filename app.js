@@ -25,6 +25,9 @@ app.use(
   })
 );
 
+const authRoutes = require('./routes/auth.routes')
+app.use('/auth', authRoutes)
+
 app.use(errorHandler);
 app.use(notFoundHandler);
 
