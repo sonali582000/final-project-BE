@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/route-guard.middleware");
 SALT_ROUNDS = 13;
 
@@ -10,6 +11,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
+  const payload = req.body;
   const potentialUser = await User.findOne({
     email: payload.email.toLowerCase().trim(),
   });
@@ -17,10 +19,17 @@ router.post("/signup", async (req, res) => {
     if (potentialUser) {
       res.status(500).json({ message: "user already signed up!" });
     } else {
-      const payload = req.body;
       const salt = bcrypt.genSaltSync(SALT_ROUNDS);
       const passwordHash = bcrypt.hashSync(payload.password, salt);
-      const userToRegister = { email: payload.email, passwordHash };
+      console.log(payload);
+      const userToRegister = {
+        email: payload.email,
+        passwordHash: passwordHash,
+        first_name: payload.first_name,
+        username: payload.username,
+        location: payload.location,
+        profile_picture: payload.profile_picture,
+      };
       const newUser = await User.create(userToRegister);
 
       //token for the new user
@@ -42,11 +51,11 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  const payload = req.body;
+  console.log(payload);
   const potentialUser = await User.findOne({
     email: payload.email.toLowerCase().trim(),
   });
-  const payload = req.body;
-  console.log(payload);
 
   try {
     if (potentialUser) {
