@@ -2,10 +2,11 @@ const { Schema, model } = require("mongoose");
 
 const eventSchema = new Schema(
   {
-    titel: { type: String, required: true },
+    titel: { type: String, required: true, trim: true },
     description: {
       type: String,
       required: true,
+      trim: true,
     },
     date: {
       type: Date,
@@ -31,4 +32,5 @@ const eventSchema = new Schema(
   }
 );
 
+const Event = model("Event", eventSchema);
 module.exports = Event;
