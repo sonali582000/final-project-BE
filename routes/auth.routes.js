@@ -8,7 +8,7 @@ SALT_ROUNDS = 13;
 
 //Just for testing purpose
 router.get("/", (req, res) => {
-  res.json("All good in here in auth");
+  res.json("All good you are in auth");
 });
 
 router.post("/signup", async (req, res) => {
