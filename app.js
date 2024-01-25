@@ -4,6 +4,7 @@ require("dotenv").config();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { isAuthenticated } = require("./middleware/route-guard.middleware");
 
 const Port = process.env.PORT;
 
@@ -25,8 +26,8 @@ app.use(
   })
 );
 
-const authRoutes = require('./routes/auth.routes')
-app.use('/auth', authRoutes)
+const usersRouter = require("./routes/user.routes");
+app.use("/api", isAuthenticated, usersRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
