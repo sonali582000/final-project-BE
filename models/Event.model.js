@@ -1,8 +1,8 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const eventSchema = new Schema(
   {
-    titel: { type: String, required: true, trim: true },
+    title: { type: String, required: true, trim: true },
     description: {
       type: String,
       required: true,
@@ -10,7 +10,7 @@ const eventSchema = new Schema(
     },
     date: {
       type: Date,
-      required: true,
+      required: false,
       min: "2024-01-01",
       max: "2030-12-27",
     },
