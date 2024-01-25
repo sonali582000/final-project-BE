@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/route-guard.middleware");
 SALT_ROUNDS = 13;
