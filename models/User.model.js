@@ -2,6 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
+    user_id: {
+      type: String,
+    },
     first_name: {
       type: String,
       required: [true, "First name is required."],
@@ -33,6 +36,6 @@ const userSchema = new Schema(
   }
 );
 
-const User = model("User", userSchema);
+const User = model("newUser", userSchema);
 
 module.exports = User;
