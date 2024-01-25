@@ -4,6 +4,7 @@ require("dotenv").config();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { isAuthenticated } = require("./middleware/route-guard.middleware")
 
 const Port = process.env.PORT;
 
@@ -24,6 +25,12 @@ app.use(
     origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
   })
 );
+
+
+
+const usersRouter = require("./routes/user.routes");
+app.use("/api", isAuthenticated, usersRouter);
+
 
 app.use(errorHandler);
 app.use(notFoundHandler);
