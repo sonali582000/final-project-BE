@@ -1,15 +1,82 @@
-const express = require("express");
-const router = express.Router();
+const Comment = require("../models/Comment.model.js");
+const router = require("express").Router();
+const { isAuthenticated } = require("../middleware/route-guard.middleware");
 
-// const Comment = require("../models/Comment.model.js")
+//for testing purpose
+router.get("/", async (req, res) => {
+  try {
+    const allcomments = await Comment.find();
+    res.status(200).json(allcomments);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while fetching the comments" });
+  }
+});
 
-router.get('/', (req, res) => {
-    res.json('Comments routes')
-    console.log("ok")
-})
+// to get all the comments on the event by the user
+router.get("/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const userComment = await Comment.find({ madeBy: userId });
+    res.status(200).json(userComment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while getting the comments" });
+  }
+});
 
+// creating new comment by user on specific event
+router.post("/:eventId", isAuthenticated, async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { userId } = req.tokenPayload;
+    const payload = req.body;
 
+    if (!payload.text) {
+      return res.status(400).json({ message: "the text is required" });
+    }
+
+    const newComment = await Comment.create({
+      text: payload.text,
+      madeBy: userId,
+      eventTitle: eventId,
+    });
+    res.status(201).json(newComment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while creating the Comment" });
+  }
+});
+
+// update the specific comment
+
+router.put("/:eventId/:commentId", isAuthenticated, async (req, res) => {
+  try {
+    const payload = req.body;
+    const { userId } = req.tokenPayload;
+    const { eventId, commentId } = req.params;
+
+    const commentToUpdate = await Comment.find({
+      _id: commentId,
+      madeBy: eventId,
+    });
+    console.log(commentToUpdate);
+    if (commentToUpdate && commentToUpdate.madeBy == userId) {
+      const commentUpdate = await Comment.findByIdAndUpdate(
+        commentId,
+        payload,
+        { new: true }
+      );
+      res.status(200).json(commentUpdate);
+    } else {
+      res
+        .status(403)
+        .json({ message: "you are not the right user to update comment" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while updating the comments" });
+  }
+});
 
 module.exports = router;
-
-

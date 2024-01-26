@@ -14,8 +14,9 @@ require("./config")(app);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
-const commentsRoutes = require("./routes/comment.routes");
-app.use("/comments", commentsRoutes);
+const commentRoutes = require("./routes/comment.routes");
+app.use("/comment", commentRoutes);
+
 const eventRoutes = require("./routes/event.routes");
 app.use("/event", eventRoutes);
 
