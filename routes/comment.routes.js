@@ -56,11 +56,10 @@ router.put("/:eventId/:commentId", isAuthenticated, async (req, res) => {
     const { userId } = req.tokenPayload;
     const { eventId, commentId } = req.params;
 
-    const commentToUpdate = await Comment.find({
+    const commentToUpdate = await Comment.findOne({
       _id: commentId,
-      madeBy: eventId,
+      eventTitle: eventId,
     });
-    console.log(commentToUpdate);
     if (commentToUpdate && commentToUpdate.madeBy == userId) {
       const commentUpdate = await Comment.findByIdAndUpdate(
         commentId,
