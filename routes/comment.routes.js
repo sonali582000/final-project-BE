@@ -42,9 +42,8 @@ router.get("/:eventId", async (req, res) => {
 });
 
 // creating new comment by user on specific event
-router.post("/:eventId", isAuthenticated, async (req, res) => {
+router.post("/", isAuthenticated, async (req, res) => {
   try {
-    const { eventId } = req.params;
     const { userId } = req.tokenPayload;
     const payload = req.body;
 
@@ -55,7 +54,7 @@ router.post("/:eventId", isAuthenticated, async (req, res) => {
     const newComment = await Comment.create({
       text: payload.text,
       madeBy: userId,
-      eventTitle: eventId,
+      eventTitle: payload.eventId,
     });
     res.status(201).json(newComment);
   } catch (error) {
@@ -66,15 +65,14 @@ router.post("/:eventId", isAuthenticated, async (req, res) => {
 
 // update the specific comment
 
-router.put("/:eventId/:commentId", isAuthenticated, async (req, res) => {
+router.put("/:commentId", isAuthenticated, async (req, res) => {
   try {
     const payload = req.body;
     const { userId } = req.tokenPayload;
-    const { eventId, commentId } = req.params;
+    const { commentId } = req.params;
 
     const commentToUpdate = await Comment.findOne({
       _id: commentId,
-      eventTitle: eventId,
     });
     if (commentToUpdate && commentToUpdate.madeBy == userId) {
       const commentUpdate = await Comment.findByIdAndUpdate(
