@@ -14,10 +14,13 @@ require("./config")(app);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+<<<<<<< HEAD
 const commentsRoutes = require("./routes/comment.routes");
 app.use("/comments", commentsRoutes)
 
 
+=======
+>>>>>>> sonali
 const eventRoutes = require("./routes/event.routes");
 app.use("/event", eventRoutes);
 

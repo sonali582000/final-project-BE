@@ -9,10 +9,7 @@ const eventSchema = new Schema(
       trim: true,
     },
     date: {
-      type: Date,
-      required: false,
-      min: "2024-01-01",
-      max: "2030-12-27",
+      type: String,
     },
     category: {
       type: String,
