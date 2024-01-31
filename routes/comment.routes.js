@@ -14,19 +14,19 @@ router.get("/", async (req, res) => {
 });
 
 // to get all the comments on the event by the user
-// router.get("/:userId", async (req, res) => {
-//   const { userId } = req.params;
-//   try {
-//     const userComment = await Comment.find({ madeBy: userId });
-//     res.status(200).json(userComment);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "error while getting the comments" });
-//   }
-// });
+router.get("/:commentId", async (req, res) => {
+  const { commentId } = req.params;
+  try {
+    const userComment = await Comment.findById(commentId);
+    res.status(200).json(userComment);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while getting the comments" });
+  }
+});
 
 // to get all the comments on events
-router.get("/:eventId", async (req, res) => {
+router.get("/event/:eventId", async (req, res) => {
   try {
     // {eventTitle:ObjectId('65b2799a4151c5da6cbf8262')}
     const { eventId } = req.params;
