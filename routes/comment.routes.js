@@ -92,4 +92,24 @@ router.put("/:commentId", isAuthenticated, async (req, res) => {
   }
 });
 
+// delete one comment
+
+router.delete("/:commentId", isAuthenticated, async (req, res) => {
+  const { userId } = req.tokenPayload;
+  const { commentId } = req.params;
+  try {
+    const commentToDelete = await Comment.findById({ _id: commentId });
+    console.log(commentToDelete);
+    if (commentToDelete.madeBy == userId) {
+      console.log("Deleting");
+      await Comment.findByIdAndDelete(commentId);
+      res.status(204).json();
+    } else {
+      res.status(403).json({ message: "you are not the right user" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "error while deleting the Comment" });
+  }
+});
+
 module.exports = router;
