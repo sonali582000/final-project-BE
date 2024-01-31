@@ -93,6 +93,7 @@ router.get("/verify", isAuthenticated, async (req, res) => {
   res.status(200).json(currentUser);
 });
 
+<<<<<<< HEAD
 router.get("/user/:userId", async  (req, res) => {
 const {userId} = req.params
   const currentUser = await User.findById(userId);
@@ -101,4 +102,17 @@ const {userId} = req.params
 });
 
 
+=======
+router.get("/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const oneUser = await User.findById(userId);
+    res.status(200).json(oneUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error while getting the User" });
+  }
+});
+
+>>>>>>> sonali
 module.exports = router;
